@@ -1,0 +1,13 @@
+export { default as AuthRootLayout } from './AuthRootLayout'
+export { default as Login } from './Login'
+export { default as Error } from './Error'
+export { default as ForgotPassword } from "./ForgotPassword"
+export { default as DashboardLayout } from "./DashboardLayout"
+export { default as ResetPassword } from "./ResetPassword"
+export { default as DashboardHome } from "./DashboardHome"
+export { default as Users } from "./Users"
+export { default as CPDPoints } from "./CPDPoints"
+export { default as Financials } from "./Financials"
+export { default as Publications } from "./Publications"
+export { default as Profile } from "./Profile"
+export { default as Events } from "./Events"

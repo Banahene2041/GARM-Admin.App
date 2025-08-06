@@ -15,7 +15,7 @@ export const loginSchema = yup.object().shape({
         .matches(/[a-z]/, "Password must contain at least one lowercase letter")
         .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
         .matches(/\d/, "Password must contain at least one number")
-        .matches(/[@$!%*?&]/, "Password must contain at least one special character")
+        .matches(/[@$!%*?&]/, "Password must contain at least one special character"),
 });
 
 export const forgotPasswordSchema = yup.object().shape({
@@ -165,3 +165,77 @@ export const resourceSchema = yup.object().shape({
             }
         )
 })
+
+
+export const newMemberSchema = yup.object().shape({
+    fullName: yup.string().trim().required().min(3),
+    email: yup
+        .string()
+        .trim()
+        .email("Please enter a valid email address")
+        .required("Email is required"),
+    password: yup
+        .string()
+        .required("Password is required")
+        .min(8, "Password must be at least 8 characters")
+        .max(100, "Password is too long")
+        .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+        .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .matches(/\d/, "Password must contain at least one number")
+        .matches(/[@$!%*?&]/, "Password must contain at least one special character"),
+    contact: yup.string().trim(),
+    birthDate: yup.date(),
+    gender: yup.string().oneOf(['male', 'female'], 'Invalid Gender').required("Member gender is required"),
+    role: yup
+        .string()
+        .oneOf(['intern', 'student', 'licensed'], 'Invalid member role')
+        .required('Member role is required'),
+
+    portfolio: yup
+        .string()
+        .oneOf(['member', 'executive'], 'Invalid member portfolio')
+        .required('Member portfolio is required'),
+});
+
+export const financeSchema = yup.object().shape({
+    title: yup.string()
+        .required('Title is required')
+        .max(100, 'Title cannot exceed 100 characters'),
+
+    amount: yup.number()
+        .typeError('Amount must be a number')
+        .required('Amount is required')
+        .positive('Amount must be a positive number'),
+
+    type: yup.string()
+        .oneOf(['Income', 'Expense'], 'Select a valid type')
+        .required('Finance type is required'),
+
+    category: yup
+        .string()
+        .oneOf(['Income', 'Expense'], 'Select a valid type')
+        .required('Category is required'),
+
+    description: yup.string()
+        .max(500, 'Description is too long'),
+
+    date: yup.date()
+        .required('Transaction date is required')
+        .max(new Date(), 'Date cannot be in the future'),
+
+    dueDate: yup.date()
+        .nullable()
+        .when('type', {
+            is: 'Expense',
+            then: (schema) => schema.min(yup.ref('date'), 'Due date cannot be before transaction date'),
+        }),
+
+    referenceNumber: yup.string()
+        .nullable()
+        .max(50, 'Reference number too long'),
+
+    paymentMethod: yup.string()
+        .oneOf(['Bank Transfer', 'Mobile Money', 'Cash', 'Card'], 'Invalid payment method')
+        .required('Payment method is required'),
+});
+
